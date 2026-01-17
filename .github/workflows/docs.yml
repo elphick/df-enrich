@@ -3,8 +3,6 @@ name: docs
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 permissions:
   contents: read
@@ -12,7 +10,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-docs:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,7 +36,7 @@ jobs:
           path: docs/_build/html
 
   deploy:
-    needs: build-docs
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
