@@ -25,7 +25,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_book_theme'
-html_static_path = ['_static']
+html_static_path = []
 
 html_theme_options = {
     "repository_url": "https://github.com/elphick/df-enrich",

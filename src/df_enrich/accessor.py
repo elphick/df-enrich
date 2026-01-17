@@ -215,36 +215,38 @@ class EnrichAccessor:
         # Handle custom resolver
         if resolver is not None:
             df = resolver(df, src, dst)
+            
+            # Track provenance
+            if not hasattr(df, 'attrs'):
+                df.attrs = {}
+            df.attrs['enrich_lookup'] = True
+            
             return df
         
         # Handle DataFrame source
         if isinstance(src, pd.DataFrame):
             # Simple merge operation - this is a placeholder
             # Real df-eval Engine would provide more sophisticated merging
-            if isinstance(dst, str):
-                dst = [dst]
+            dst_cols = [dst] if isinstance(dst, str) else dst
             
             # Validate that destination columns exist in source
-            missing_cols = [col for col in dst if col not in src.columns]
+            missing_cols = [col for col in dst_cols if col not in src.columns]
             if missing_cols:
                 raise ValueError(f"Columns {missing_cols} not found in source DataFrame. Available columns: {list(src.columns)}")
             
             # For now, do a simple index-based merge
             # In a real implementation, this would be more sophisticated
             # Try to merge on index
-            result = df.merge(src[dst], left_index=True, right_index=True, how='left', suffixes=('', '_lookup'))
+            result = df.merge(src[dst_cols], left_index=True, right_index=True, how='left', suffixes=('', '_lookup'))
             
-            # Handle missing values
-            if isinstance(dst, list):
-                missing_count = result[dst].isnull().sum().sum()
-            else:
-                missing_count = result[dst].isnull().sum()
+            # Handle missing values - always sum over all columns
+            missing_count = result[dst_cols].isnull().sum().sum()
             
             if missing_count > 0:
                 if on_missing == "raise":
-                    raise ValueError(f"Lookup failed: {missing_count} missing values in {dst}")
+                    raise ValueError(f"Lookup failed: {missing_count} missing values in {dst_cols}")
                 elif on_missing == "warn":
-                    warnings.warn(f"Lookup resulted in {missing_count} missing values in {dst}")
+                    warnings.warn(f"Lookup resulted in {missing_count} missing values in {dst_cols}")
             
             df = result
         
