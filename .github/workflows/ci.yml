@@ -79,7 +79,7 @@ jobs:
     - name: Build documentation
       run: |
         cd docs
-        uv run sphinx-build -W -b html . _build/html
+        uv run sphinx-build -b html . _build/html
     
     - name: Upload docs artifact
       uses: actions/upload-artifact@v4

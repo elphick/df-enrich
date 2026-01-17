@@ -145,6 +145,14 @@ class TestLookup:
         assert "price" in result.columns
         assert "enrich_lookup" in result.attrs
     
+    def test_lookup_with_missing_columns(self):
+        """Test that lookup validates column existence in source."""
+        df = pd.DataFrame({"a": [1, 2, 3]}, index=[0, 1, 2])
+        lookup_df = pd.DataFrame({"price": [10, 20, 30]}, index=[0, 1, 2])
+        
+        with pytest.raises(ValueError, match="not found in source DataFrame"):
+            df.enrich.lookup(lookup_df, dst="nonexistent_col")
+    
     def test_lookup_with_string_source(self):
         """Test that string sources raise NotImplementedError."""
         df = pd.DataFrame({"a": [1, 2, 3]})
@@ -177,6 +185,16 @@ class TestCast:
         assert result["a"].dtype == "int64"
         assert result["b"].dtype == "float32"
         assert "enrich_cast" in result.attrs
+    
+    def test_cast_with_missing_columns(self):
+        """Test that cast warns about missing columns."""
+        df = pd.DataFrame({"a": [1, 2, 3]})
+        
+        with pytest.warns(UserWarning, match="not found in DataFrame"):
+            result = df.enrich.cast({"a": "int64", "nonexistent": "float32"})
+        
+        # Should still cast existing columns
+        assert result["a"].dtype == "int64"
 
 
 class TestConfig:

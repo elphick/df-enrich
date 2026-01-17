@@ -54,15 +54,6 @@ api
 examples
 ```
 
-## API Reference
-
-```{eval-rst}
-.. automodule:: df_enrich.accessor
-   :members:
-   :undoc-members:
-   :show-inheritance:
-```
-
 ## Examples
 
 ### Validation

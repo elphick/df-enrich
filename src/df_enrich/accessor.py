@@ -224,26 +224,29 @@ class EnrichAccessor:
             if isinstance(dst, str):
                 dst = [dst]
             
+            # Validate that destination columns exist in source
+            missing_cols = [col for col in dst if col not in src.columns]
+            if missing_cols:
+                raise ValueError(f"Columns {missing_cols} not found in source DataFrame. Available columns: {list(src.columns)}")
+            
             # For now, do a simple index-based merge
             # In a real implementation, this would be more sophisticated
-            try:
-                # Try to merge on index
-                result = df.merge(src[dst], left_index=True, right_index=True, how='left', suffixes=('', '_lookup'))
-                
-                # Handle missing values
-                missing_count = result[dst].isnull().sum().sum() if isinstance(dst, list) else result[dst].isnull().sum()
-                if missing_count > 0:
-                    if on_missing == "raise":
-                        raise ValueError(f"Lookup failed: {missing_count} missing values in {dst}")
-                    elif on_missing == "warn":
-                        warnings.warn(f"Lookup resulted in {missing_count} missing values in {dst}")
-                
-                df = result
-            except Exception as e:
+            # Try to merge on index
+            result = df.merge(src[dst], left_index=True, right_index=True, how='left', suffixes=('', '_lookup'))
+            
+            # Handle missing values
+            if isinstance(dst, list):
+                missing_count = result[dst].isnull().sum().sum()
+            else:
+                missing_count = result[dst].isnull().sum()
+            
+            if missing_count > 0:
                 if on_missing == "raise":
-                    raise
+                    raise ValueError(f"Lookup failed: {missing_count} missing values in {dst}")
                 elif on_missing == "warn":
-                    warnings.warn(f"Lookup failed: {e}")
+                    warnings.warn(f"Lookup resulted in {missing_count} missing values in {dst}")
+            
+            df = result
         
         # Handle string source (registry, etc.)
         elif isinstance(src, str):
@@ -303,6 +306,14 @@ class EnrichAccessor:
         >>> df.enrich.cast({"col1": "int64", "col2": "float32"})
         """
         df = self._obj.copy()
+        
+        # Validate columns exist
+        missing_cols = [col for col in dtype_spec.keys() if col not in df.columns]
+        if missing_cols:
+            warnings.warn(
+                f"Columns {missing_cols} not found in DataFrame. Available columns: {list(df.columns)}. "
+                "These columns will be skipped."
+            )
         
         for col, dtype in dtype_spec.items():
             if col in df.columns:
