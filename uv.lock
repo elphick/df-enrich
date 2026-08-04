@@ -283,6 +283,7 @@ name = "df-enrich"
 version = "0.1.1"
 source = { editable = "." }
 dependencies = [
+    { name = "matplotlib" },
     { name = "pandas" },
     { name = "pandera" },
     { name = "pyyaml" },
@@ -309,6 +310,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "matplotlib", specifier = ">=3.11.1" },
     { name = "myst-parser", marker = "extra == 'docs'", specifier = ">=2.0.0" },
     { name = "pandas", specifier = ">=2.0.0" },
     { name = "pandera", specifier = ">=0.24.0" },
