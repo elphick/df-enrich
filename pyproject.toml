@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "df-enrich"
-version = "0.1.0"
+version = "0.1.1"
 description = "Pandas DataFrame accessor for schema-driven validation, derived columns, lookups, and profiling—powered by df-eval."
 readme = "README.md"
 requires-python = ">=3.12"
