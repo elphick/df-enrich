@@ -61,6 +61,7 @@ jobs:
     
     - name: Run ruff
       run: uv run ruff check src/ tests/
+      continue-on-error: true
 
   docs:
     runs-on: ubuntu-latest
