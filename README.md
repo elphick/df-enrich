@@ -155,10 +155,6 @@ cd docs
 uv run sphinx-build -b html . _build/html
 ```
 
-## License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

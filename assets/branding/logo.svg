@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 196 196"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-labelledby="title">
+
+  <title>df-enrich</title>
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --grid:#334155;
+      --accent:#22c55e;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0f172a;
+        --grid:#94a3b8;
+        --accent:#4ade80;
+      }
+    }
+
+    .frame{
+      fill:none;
+      stroke:var(--grid);
+      stroke-width:6;
+      stroke-linejoin:round;
+    }
+
+    .grid{
+      stroke:var(--grid);
+      stroke-width:6;
+      stroke-linecap:round;
+    }
+
+    .badge{
+      fill:var(--accent);
+    }
+
+    .plus{
+      stroke:#fff;
+      stroke-width:9;
+      stroke-linecap:round;
+    }
+  </style>
+
+  <!-- background -->
+  <rect x="0" y="0" width="196" height="196" rx="28" fill="var(--bg)"/>
+
+  <!-- dataframe -->
+  <g transform="translate(34,34)">
+    <rect x="0" y="0" width="128" height="128" rx="10" class="frame"/>
+
+    <line x1="42.7" y1="0" x2="42.7" y2="128" class="grid"/>
+    <line x1="85.3" y1="0" x2="85.3" y2="128" class="grid"/>
+
+    <line x1="0" y1="42.7" x2="128" y2="42.7" class="grid"/>
+    <line x1="0" y1="85.3" x2="128" y2="85.3" class="grid"/>
+  </g>
+
+  <!-- enrichment badge -->
+  <circle cx="112" cy="84" r="32" class="badge"/>
+
+  <!-- plus -->
+  <line x1="112" y1="66" x2="112" y2="102" class="plus"/>
+  <line x1="94"  y1="84" x2="130" y2="84" class="plus"/>
+
+</svg>

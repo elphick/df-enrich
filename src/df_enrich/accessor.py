@@ -4,7 +4,7 @@ DataFrame accessor providing enrichment methods.
 import warnings
 from typing import Any, Optional, Union, Dict, Callable
 import pandas as pd
-import pandera as pa
+import pandera.pandas as pa
 import yaml
 
 

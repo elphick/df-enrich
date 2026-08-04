@@ -4,5 +4,12 @@ df-enrich: Pandas DataFrame accessor for schema-driven validation, derived colum
 
 from .accessor import EnrichAccessor
 
-__version__ = "0.1.0"
+from importlib import metadata
+
+try:
+    __version__ = metadata.version('df-enrich')
+except metadata.PackageNotFoundError:
+    # Package is not installed
+    pass
+
 __all__ = ["EnrichAccessor"]
